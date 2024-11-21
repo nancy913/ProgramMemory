@@ -1,0 +1,92 @@
+py_q = {
+    1: ["What is the capital of India?", "Mumbai", "Delhi", "Bihar", "Malad", "Delhi"],
+    2: ["What is 2 + 2?", "3", "4", "5", "6", "4"],
+    3: ["What is the color of the sky?", "Blue", "Green", "Red", "Yellow", "Blue"],
+    4: ["Which language is used for web development?", "Python", "JavaScript", "C++", "Java", "JavaScript"],
+    5: ["What is the full form of CPU?", "Central Process Unit", "Central Processing Unit", "Computer Personal Unit", "Central Processor Unit", "Central Processing Unit"]
+}
+
+# Dictionary to store user credentials and scores
+users = {}
+current_user = None
+
+print("Welcome to the Quiz Application")
+
+while True:
+    # Display banner
+    print("\nMenu:")
+    print("1. Registration")
+    print("2. Login")
+    print("3. Attempt Quiz")
+    print("4. Show Result")
+    print("5. Exit Quiz")
+
+    choice = input("Enter your choice: ")
+
+    if choice == '1':
+        # Registration
+        username = input("Enter a new username: ")
+        if username in users:
+            print("Username already exists. Try another one.")
+        else:
+            password = input("Enter a password: ")
+            users[username] = {"password": password, "score": 0}
+            print("Registration successful!")
+
+    elif choice == '2':
+        # Login
+        username = input("Enter your username: ")
+        password = input("Enter your password: ")
+        if username in users and users[username]["password"] == password:
+            current_user = username
+            print("Login successful!")
+        else:
+            print("Invalid username or password.")
+
+    elif choice == '3':
+        # Attempt Quiz
+        if not current_user:
+            print("Please login first.")
+            continue
+
+        print("Select a topic for the quiz:")
+        print("a. DSA")
+        print("b. DBMS")
+        print("c. Python")
+        topic_choice = input("Enter your choice (a/b/c): ").lower()
+
+        if topic_choice in ['a', 'b', 'c']:
+            print("Attempting the quiz. Answer the following questions:")
+            score = 0
+            for q_id, question_data in py_q.items():
+                print(f"\n{question_data[0]}")
+                print(f"1. {question_data[1]}")
+                print(f"2. {question_data[2]}")
+                print(f"3. {question_data[3]}")
+                print(f"4. {question_data[4]}")
+
+                answer = input("Enter the correct option number (1/2/3/4): ")
+                if question_data[int(answer)] == question_data[5]:
+                    print("Correct!")
+                    score += 1
+                else:
+                    print("Incorrect.")
+            users[current_user]["score"] = score
+            print(f"Quiz completed! Your score is {score}/5.")
+        else:
+            print("Invalid topic choice.")
+
+    elif choice == '4':
+        # Show Result
+        if not current_user:
+            print("Please login first.")
+            continue
+        print(f"{current_user}'s Score: {users[current_user]['score']}/5")
+
+    elif choice == '5':
+        # Exit
+        print("Thank you for participating in the quiz. Goodbye!")
+        break
+
+    else:
+        print("Invalid choice. Please select a valid option.")
